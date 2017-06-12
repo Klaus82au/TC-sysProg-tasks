@@ -1,0 +1,2 @@
+#single line CLI compilation
+gcc -g -O -Wall -I./src/m1/include -I./src/m2/include -I. /include ./src/m1/m1.c ./src/m2/m2.c -o ./output/hw.out
