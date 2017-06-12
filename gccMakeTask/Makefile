@@ -3,14 +3,12 @@ CC=gcc
 #flags
 CFLAGS= -g -O -Wall
 #include PATHs
-INC=-I include \
-	-I src/m1/include  \
-	-I src/m2/include
+INC=-Iinclude -Isrc/m1/include -Isrc/m2/include
 csrc = $(wildcard src/m1/*.c) \
 $(wildcard src/m2/*.c)
 obj = $(csrc:.c=.o)
 #misc
-OUT=outp
+OUT=outp/
 PREFIX = /usr/local
 TARGET=helloWorld
 #phony targets
@@ -19,17 +17,17 @@ TARGET=helloWorld
 all: $(TARGET)
 
 clean:
-	-rm -rf $(OUT)/$(TARGET) $(OUT)/*.o
+	-rm -rf $(OUT)/$(TARGET) $(OUT)*.o
 
 $(TARGET): $(obj)
-	$(CC) $(CFLAGS) $(INC) $^ -o $@ 
+	$(CC) $(INC) $(CFLAGS)  $(addprefix $(OUT),$(notdir $^)) -o $(OUT)$@ 
 
-%.o: %.s
-	$(CC) $(CFLAGS) $(INC) -c $(OUT)$< -o $(OUT)$@
+%.o: %.c
+	$(CC) $(INC) $(CFLAGS) -c $< -o $(OUT)$(notdir $@)
 
 install: $(TARGET)
 	mkdir -p $(DESTDIR)$(PREFIX)/bin    #user can do `make istall DESTDIR=smth` into custom dir
-	cp $(OUT)/$< $(DESTDIR)$(PREFIX)/bin/$(TARGET)
+	cp $(OUT)$< $(DESTDIR)$(PREFIX)/bin/$(TARGET)
 
 uninstall:
 			rm -f $(DESTDIR)$(PREFIX)/bin/$(TARGET)
