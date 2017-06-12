@@ -6,11 +6,11 @@ CFLAGS= -g -O -Wall
 INC=-I include \
 	-I src/m1/include  \
 	-I src/m2/include
-csrc = $(wildcard src/m1/*.c) \ 
-       $(wildcard src/m2/*.c)
+csrc = $(wildcard src/m1/*.c) \
+$(wildcard src/m2/*.c)
 obj = $(csrc:.c=.o)
 #misc
-OUT=output
+OUT=outp
 PREFIX = /usr/local
 TARGET=helloWorld
 #phony targets
@@ -23,6 +23,9 @@ clean:
 
 $(TARGET): $(obj)
 	$(CC) $(CFLAGS) $(INC) $^ -o $@ 
+
+%.o: %.s
+	$(CC) $(CFLAGS) $(INC) -c $(OUT)$< -o $(OUT)$@
 
 install: $(TARGET)
 	mkdir -p $(DESTDIR)$(PREFIX)/bin    #user can do `make istall DESTDIR=smth` into custom dir
